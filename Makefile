@@ -39,9 +39,11 @@ ROOT=$(shell pwd)
 
 # Set search path for header and source files
 vpath %.c src
+vpath %.c driverlib
 
-CFLAGS += -I $(ROOT)/inc -I inc
-CFLAGS += -include stdint.h
+CFLAGS += -I $(ROOT)/inc -I inc -I$(ROOT)/driverlib
+CFLAGS += -include stdint.h 
+CFLAGS += -include stdbool.h
 
 OBJS=$(SRCS:.c=.o)
 
@@ -57,7 +59,6 @@ $(PROJ_NAME).elf: $(SRCS)
 	$(CC) $(CFLAGS) $^ -o $@ -L$(LDSCRIPT_INC) -T tm4c123g.ld
 	$(OBJCOPY) -O binary $(PROJ_NAME).elf $(PROJ_NAME).bin
 	$(OBJDUMP) -St $(PROJ_NAME).elf > $(PROJ_NAME).lst
-	$(FLASH_TOOL) $(PROJ_NAME).bin
 
 flash:
 	$(FLASH_TOOL) $(PROJ_NAME).bin
