@@ -1,0 +1,46 @@
+arm-none-eabi-gcc -Wall -g -std=c99 -Os -mthumb -mcpu=cortex-m4 -ffunction-sections -fdata-sections -Wl,--gc-sections startup_gcc.c main.c -o main.elf -T tm4c123g.ld
+
+Most commonly used GCC options
+
+	Warning options
+		-Wall				:   Activate all warnings
+
+	Debug Options
+	   	-g					:   Produce debugging information in the OS native format
+
+	Optimization Options
+		-Os					:	Optimize for size, -Os enables all -O2 optimizations
+		-ffunction-sections	:   Place each function into its own section in the output file, linker optimizations to improve locality of reference in the instruction space
+		-fdata-sections     :   Place each data item into its own section in the output file, linker optimizations to improve locality of reference in the instruction space
+		// Read more!!
+
+	Machine dependant Options - ARM Options
+		-mlittle-endian		:	Generate code for a processor running in little-endian mode, this is the default for all standard configurations
+		-march=name			:	Specifies the name of the target ARM architecture
+		-mtune=name			:	Specifies the name of the target ARM processor for which GCC should tune the performance of the code
+		-mcpu=name			:   Specifies the name of the target ARM processor
+		-mfpu=name			:	This specifies the floating-point hardware is available on the target
+		-mthumb      		:   Generates code that executes in Thumb state
+		-mcpu=cortex-m4 	:   Cortex-M4 processor target
+
+	Options Controlling the C dialect
+		-std=name           :   Determine the language standard
+
+	Preprocessor Options
+		-D name             :   Predefine "name" as a macro, with definition 1
+		-D name=definition	:   Predefine "name" as a macro, with definition "definition"
+		-o file             :   Write output to "file"
+		-I dir				:	Add the directory dir to the list of directories to be searched for header files
+		-include file		:	Process file as if #include "file" appeared as the first line of the primary source file
+
+	Options for Linking
+		-l library			:	Search the library named "library" when linking
+
+	Options for directory search
+		-L dir				: 	Add directory "dir" to the list of directories to be searched for "-l"
+		-B prefix			:	This option specifies where to find the executables, libraries, include files, and data files of the compiler itself
+
+GNU Linker options
+
+		-Wl,option			:   Pass as "option" to the linker    
+		-Wl,--gc-sections   :   Enable garbage collection of unused input sections, decides which input sections are used by examining symbols and relocatio
