@@ -1,24 +1,47 @@
+// Hardware register definition file
 #include "tm4c123ge6pm.h"
 
+// Bit-specific addressing registers for the PF1, PF2 and PF3 pins
+// Defined by the PortF register address base (0x40025000) plus
+// the pins intended to be accessed (Pin1 = 0x08, Pin2 = 0x10, Pin3 = 0x20)
+#define PF1_DATA (*((volatile unsigned long *)0x40025008))
+#define PF2_DATA (*((volatile unsigned long *)0x40025010))
+#define PF3_DATA (*((volatile unsigned long *)0x40025020))
+
+// Simple macros to turn on and off each pin
+#define PF1_ON 	PF1_DATA = 0x02;
+#define PF1_OFF	PF1_DATA = 0x00;
+
+#define PF2_ON  PF2_DATA = 0x02;
+#define PF2_OFF PF2_DATA = 0x00;
+
+#define PF3_ON  PF3_DATA = 0x02;
+#define PF3_OFF PF3_DATA = 0x00;
+
+// Function declaration
 void PortF_Init(void);
 void Delay(void);
 
 int main(void)
 {
-    unsigned char i;
+    uint32_t i;
     
     PortF_Init();
 
     while(1) {
 
-        GPIO_PORTF_DATA_R |= 0x08;
+        // Turn on LED 
+        PF1_ON
 
-        for (i = 0; i < 1; i++) {
+        // Wait some instruction cycles
+        for (i = 0; i < 10; i++) {
             Delay();
         }
 
-        GPIO_PORTF_DATA_R &= ~0x08;
+        // Turn off LED
+        PF1_OFF
 
+        // Wait some instruction cycles
         for (i = 0; i < 10; i++) {
             Delay();
         }
@@ -27,7 +50,7 @@ int main(void)
 
 void PortF_Init(void)
 {
-    volatile unsigned long delay;
+    volatile uint32_t delay;
 
   	SYSCTL_RCGC2_R |= 0x00000020;     // 1) activate clock for Port F
   	delay = SYSCTL_RCGC2_R;           // allow time for clock to start

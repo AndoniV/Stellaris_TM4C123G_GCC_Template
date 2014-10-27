@@ -5,6 +5,7 @@ SRCS = main.c startup_gcc.c
 PROJ_NAME=main
 
 # Location of the Libraries folder
+PERIPH_LIB=/driverlib/gcc
 
 # Location of the Linker Scripts
 LDSCRIPT_INC = Device/ldscripts
@@ -56,7 +57,7 @@ all: proj
 proj: $(PROJ_NAME).elf
 
 $(PROJ_NAME).elf: $(SRCS)
-	$(CC) $(CFLAGS) $^ -o $@ -L$(LDSCRIPT_INC) -T tm4c123g.ld
+	$(CC) $(CFLAGS) $^ -o $@ -L$(ROOT)$(PERIPH_LIB) -ldriver -L$(LDSCRIPT_INC) -T tm4c123g.ld
 	$(OBJCOPY) -O binary $(PROJ_NAME).elf $(PROJ_NAME).bin
 	$(OBJDUMP) -St $(PROJ_NAME).elf > $(PROJ_NAME).lst
 
